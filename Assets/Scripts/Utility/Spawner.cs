@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
+[AddComponentMenu("Utils/Spawner")]
 public class Spawner : MonoBehaviour
 {
     #region Private Fields

@@ -1,0 +1,64 @@
+﻿using UnityEngine;
+using XInputDotNetPure;
+
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField]
+    private float speed;
+    private new Rigidbody rigidbody;
+
+    [SerializeField]
+    private Control usedControl;
+
+    // Use this for initialization
+    void Start()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
+    void Awake()
+    {
+        usedControl = GamePadManager.IsConnected(PlayerIndex.One) ? Control.Controller : Control.Keyboard;
+        GamePadManager.Connected += GamePadManager_Connected;
+        GamePadManager.Disconnected += GamePadManager_Disconnected;
+    }
+
+    private void GamePadManager_Disconnected(GamePadManager.GamePadEventArgs e)
+    {
+        usedControl = Control.Keyboard;
+    }
+
+    private void GamePadManager_Connected(GamePadManager.GamePadEventArgs e)
+    {
+        usedControl = GameManager.Instance.PreferredControl;
+    }
+
+    //Init von Physics
+    void FixedUpdate()
+    {
+        Vector2 movement = usedControl == Control.Controller ? GamePadManager.ThumbLeft(PlayerIndex.One) : new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        //x: horizontal, y: hoch, y: vertical
+        Vector3 move = new Vector3(movement.x, 0.0f, movement.y);
+
+        rigidbody.AddForce(move * acceleration);
+
+        if(rigidbody.velocity.magnitude > speed)
+        {
+
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+
+public enum Control
+{
+    Controller,
+    Keyboard
+}

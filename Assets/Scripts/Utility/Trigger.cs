@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
+[AddComponentMenu("Utils/Trigger")]
 public class Trigger : MonoBehaviour
 {
     #region Public Fields

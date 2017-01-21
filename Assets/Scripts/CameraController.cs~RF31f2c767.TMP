@@ -1,0 +1,104 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[Serializable]
+public class CameraPosition
+{
+    [SerializeField]
+    private float upperAngle;
+
+    public float UpperAngle
+    {
+        get { return upperAngle; }
+        set { upperAngle = value; }
+    }
+
+    [SerializeField]
+    private float lowerAngle;
+
+    public float LowerAngle
+    {
+        get { return lowerAngle; }
+        set { lowerAngle = value; }
+    }
+
+    [SerializeField]
+    private float upperDistance;
+
+    public float UpperDistance
+    {
+        get { return upperDistance; }
+        set { upperDistance = value; }
+    }
+
+    [SerializeField]
+    private float lowerDistance;
+
+    public float LowerDistance
+    {
+        get { return lowerDistance; }
+        set { lowerDistance = value; }
+    }
+
+    public void DebugDraw(Vector3 center, Color debugColor)
+    {
+        Gizmos.color = debugColor;
+        DrawCircle(center, upperAngle, upperDistance);
+        DrawCircle(center, lowerAngle, lowerDistance);
+    }
+
+    public Vector3 GetPointOnCircle(float angle, float height)
+    {
+        float correctedAngle = angle % (Mathf.PI * 2);
+        float correctedHeight = height % 1f;
+
+        float x = Mathf.Cos(correctedAngle) * Mathf.Lerp(lowerDistance, lowerDistance, correctedHeight);
+        float y = Mathf.Lerp(lowerAngle, upperAngle, correctedHeight);
+        float z = Mathf.Sin(correctedAngle) * Mathf.Lerp(lowerDistance, lowerDistance, correctedHeight);
+
+        return new Vector3(x, y, z);
+    }
+
+    private void DrawCircle(Vector3 center, float heightOffset, float distance)
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            float x = Mathf.Cos(Mathf.PI * i / 10f) * distance;
+            float y = Mathf.Sin(Mathf.PI * i / 10f) * distance;
+
+            float x2 = Mathf.Cos(Mathf.PI * (i + 1) / 10f) * distance;
+            float y2 = Mathf.Sin(Mathf.PI * (i + 1) / 10f) * distance;
+            Gizmos.DrawLine(center + new Vector3(x, heightOffset, y), center + new Vector3(x2, heightOffset, y2));
+        }
+    }
+}
+
+[SerializeField]
+public class CameraController : MonoBehaviour
+{
+    new Camera camera;
+    PlayerController controller;
+
+    [SerializeField]
+    CameraPosition chibi = new CameraPosition();
+    [SerializeField]
+    CameraPosition monster = new CameraPosition();
+
+    void Awake()
+    {
+        camera = GetComponent<Camera>();
+    }
+    
+    void Update()
+    {
+        controller.SineValue
+    }
+
+    public void OnDrawGizmos()
+    {
+        chibi.DebugDraw(transform.position, Color.blue);
+        monster.DebugDraw(transform.position, Color.red);
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
+[AddComponentMenu("Utils/Counnter")]
 public class Counter : MonoBehaviour
 {
     #region Public Fields

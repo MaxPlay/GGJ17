@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Light))]
+[AddComponentMenu("Utils/LightSwitch")]
 public class LightSwitch : MonoBehaviour
 {
     #region Private Fields
