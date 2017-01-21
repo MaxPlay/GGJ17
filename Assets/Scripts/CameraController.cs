@@ -96,15 +96,27 @@ public class CameraController : MonoBehaviour
     [Range(0, 1)]
     private float height;
 
+    [SerializeField]
+    [Range(float.Epsilon, 1)]
+    private float cameraMoveSpeedX;
+
+    [SerializeField]
+    [Range(float.Epsilon, 1)]
+    private float cameraMoveSpeedY;
+
     void Start()
     {
         camera = Camera.main;
-        if (controller == null)
-            controller = GetComponentInParent<PlayerController>();
     }
 
     void Update()
     {
+        Vector2 input = controller.UsedControl == Control.Controller ? GamePadManager.ThumbRight(XInputDotNetPure.PlayerIndex.One) : new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        height += input.y * cameraMoveSpeedY;
+        height = Mathf.Clamp01(height);
+        angle -= input.x * cameraMoveSpeedX;
+
+        transform.position = controller.transform.position;
         camera.transform.localPosition = GetPosition(controller.SineValue);
         camera.transform.LookAt(transform);
 

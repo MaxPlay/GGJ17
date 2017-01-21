@@ -14,6 +14,10 @@ public class SineStateSwitcher
         Low
     }
 
+    public delegate void SineStateChangedEventHandler(SineState state);
+
+    public event SineStateChangedEventHandler StateChanged;
+
     [SerializeField]
     private float switchTime;
 
