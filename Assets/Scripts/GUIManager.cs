@@ -40,7 +40,7 @@ enum Abilities
     Hammerwave
 }
 
-enum PowerUps
+public enum PowerUps
 {
     None = -1,
     Invincibility,
