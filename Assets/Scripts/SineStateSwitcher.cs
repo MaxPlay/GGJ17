@@ -64,7 +64,6 @@ public class SineStateSwitcher
                     timer -= switchTime;
                     state = SineState.High;
                     value = 1;
-                    OnStateChanged(state);
                     break;
                 }
                 value = Mathf.Cos(Mathf.PI - timer / switchTime * Mathf.PI);
@@ -74,7 +73,6 @@ public class SineStateSwitcher
                 {
                     timer -= highTime;
                     state = SineState.Falling;
-                    OnStateChanged(state);
                 }
                 break;
             case SineState.Falling:
@@ -83,7 +81,6 @@ public class SineStateSwitcher
                     timer -= switchTime;
                     state = SineState.Low;
                     value = -1;
-                    OnStateChanged(state);
                     break;
                 }
                 value = Mathf.Cos(timer / switchTime * Mathf.PI);
@@ -93,18 +90,11 @@ public class SineStateSwitcher
                 {
                     timer -= lowTime;
                     state = SineState.Rising;
-                    OnStateChanged(state);
                 }
                 break;
         }
 
         return value;
-    }
-
-    private void OnStateChanged(SineState state)
-    {
-        if (StateChanged != null)
-            StateChanged(state);
     }
 
     [SerializeField]
