@@ -10,10 +10,10 @@ public class CoordinateSystemHelper : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.forward * length);
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * length);
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.up * length);
+        Gizmos.DrawLine(transform.position, transform.position + transform.up * length);
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.right * length);
+        Gizmos.DrawLine(transform.position, transform.position + transform.right * length);
     }
 }

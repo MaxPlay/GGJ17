@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private Control usedControl;
+    [SerializeField]
     private float viewAngle;
 
     void Start()
@@ -58,14 +59,15 @@ public class PlayerController : MonoBehaviour
     {
         if (rigidbody.velocity.magnitude > 0)
         {
-            float x = Mathf.Cos(viewAngle);
-            float z = Mathf.Sin(viewAngle);
-            Quaternion targetRotation = Quaternion.Euler(x, 0, z);
+            float x = Mathf.Rad2Deg * Mathf.Cos(viewAngle);
+            float z = Mathf.Rad2Deg * Mathf.Sin(viewAngle);
+            transform.LookAt(transform.position + new Vector3(x, transform.position.y, z));
+            Debug.Log(x + "," + z);
         }
 
         Vector2 movement = usedControl == Control.Controller ? GamePadManager.ThumbLeft(PlayerIndex.One) : new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        Vector3 move = transform.forward * movement.x + transform.right * movement.y;
+        Vector3 move = transform.forward * movement.x + transform.right * -movement.y;
 
         rigidbody.AddForce(move * acceleration);
 
