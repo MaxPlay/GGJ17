@@ -21,13 +21,13 @@ public class GUIManager : MonoBehaviour {
 		
 	}
 }
-enum PowerUps
+public enum PowerUps
 {
+    None = -1,
     Invincibility,
     Freeze,
     Waveskip,
     DoubleDamage,
-    Push,
     RageBurst,
     Raydestruct
 }
