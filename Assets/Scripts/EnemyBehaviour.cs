@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    SineStateSwitcher switcher;
-
-    private float distanceToPlayer;
+    private float distanceToTarget;
+    private float localRadius;
+    private float targetRadius;
     NavMeshAgent agent;
 
     [SerializeField]
@@ -34,20 +34,33 @@ public class EnemyBehaviour : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        localRadius = GetComponent<SphereCollider>().radius;
+        targetRadius = target.GetComponent<CapsuleCollider>().radius;
     }
 
     // Update is called once per frame
     void Update()
     {
-        switcher.Update();
-
-        agent.SetDestination(target.transform.position);
-
-        distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
-
-        while (distanceToPlayer > viewRange)
+        distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+        
+        //Moves Actor to Target, but NOT into the Target ( -(loc and targ radius) )
+        agent.SetDestination(Vector3.MoveTowards(transform.position, target.transform.position, distanceToTarget - (localRadius + targetRadius)));
+        
+        if (distanceToTarget > viewRange)
         {
             agent.speed = 0;
         }
+        transform.LookAt(new Vector3(transform.position.x, transform.position.y, target.transform.position.z));
+
+
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, viewRange);
+        Gizmos.color = Color.red;
+        Ray r = new Ray();
+        r.direction = target.transform.position - transform.position;
+        r.origin = transform.position;
+        Gizmos.DrawRay(r);
     }
 }
