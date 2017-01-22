@@ -85,5 +85,6 @@ public enum PowerUps
     Waveskip,
     DoubleDamage,
     RageBurst,
-    Raydestruct
+    Raydestruct,
+    Push
 }
