@@ -18,6 +18,12 @@ public class SineStateSwitcher
 
     public event SineStateChangedEventHandler StateChanged;
 
+    private void OnStateChanged(SineState state)
+    {
+        if (StateChanged != null)
+            StateChanged(state);
+    }
+
     [SerializeField]
     private float switchTime;
 
@@ -55,7 +61,7 @@ public class SineStateSwitcher
 
     public float Update(bool skipTimer = false)
     {
-        if(!skipTimer) timer += Time.deltaTime;
+        if (!skipTimer) timer += Time.deltaTime;
         switch (state)
         {
             case SineState.Rising:
@@ -67,6 +73,7 @@ public class SineStateSwitcher
                         timer -= switchTime;
                     state = SineState.High;
                     value = 1;
+                    OnStateChanged(SineState.High);
                     break;
                 }
                 value = Mathf.Cos(Mathf.PI - timer / switchTime * Mathf.PI);
@@ -79,6 +86,7 @@ public class SineStateSwitcher
                     else
                         timer -= highTime;
                     state = SineState.Falling;
+                    OnStateChanged(SineState.Falling);
                 }
                 break;
             case SineState.Falling:
@@ -89,6 +97,7 @@ public class SineStateSwitcher
                     else
                         timer -= switchTime;
                     state = SineState.Low;
+                    OnStateChanged(SineState.Low);
                     value = -1;
                     break;
                 }
@@ -102,6 +111,7 @@ public class SineStateSwitcher
                     else
                         timer -= lowTime;
                     state = SineState.Rising;
+                    OnStateChanged(SineState.Rising);
                 }
                 break;
         }
@@ -117,6 +127,24 @@ public class SineStateSwitcher
     {
         get { return state; }
         set { state = value; }
+    }
+
+    public float ConstantSine
+    {
+        get
+        {
+            switch (state)
+            {
+                case SineState.Rising:
+                case SineState.Falling:
+                    return timer / switchTime;
+                case SineState.High:
+                    return timer / highTime;
+                case SineState.Low:
+                    return timer / lowTime;
+            }
+            return 0;
+        }
     }
 
     public void Waveskip(float forward)

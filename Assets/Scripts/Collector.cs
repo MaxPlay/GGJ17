@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,8 @@ public class Collector : MonoBehaviour
             bag[i] = PowerUps.None;
     }
 
+    public event EventHandler Collect;
+
     private void OnTriggerEnter(Collider other)
     {
         PickUpRotator collectable = other.GetComponent<PickUpRotator>();
@@ -30,8 +33,15 @@ public class Collector : MonoBehaviour
                 {
                     bag[i] = collectable.Type;
                     Destroy(collectable.gameObject);
+                    OnCollect();
                     return;
                 }
         }
+    }
+
+    private void OnCollect()
+    {
+        if (Collect != null)
+            Collect(this, new EventArgs());
     }
 }
