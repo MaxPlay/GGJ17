@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour
 {
     #region Private Fields
 
+    public EnemySmashController smasher;
+    public float Health;
     public Collector Collector { get { return collector; } }
-
+    public SineWaves AnimationSineController;
     [SerializeField]
     private float acceleration;
 
@@ -120,19 +122,29 @@ public class PlayerController : MonoBehaviour
     public void UseDash()
     {
         if (dash.Usable)
+        {
             dash.Use();
+            AnimationSineController.OnDash();
+            rigidbody.AddForce(transform.forward * 5000.0f);
+        }
     }
 
     public void UseSmash()
     {
         if (smash.Usable && !smash.Used && !wave.Used && switcher.State == SineStateSwitcher.SineState.High)
+        {
             smash.Use();
+            AnimationSineController.OnLandingAttack();
+        }
     }
 
     public void UseWave()
     {
         if (wave.Usable && !wave.Used && !smash.Used && switcher.State == SineStateSwitcher.SineState.High)
+        {
             wave.Use();
+            AnimationSineController.OnPushAttack();
+        }
     }
 
     #endregion Public Methods
@@ -168,12 +180,12 @@ public class PlayerController : MonoBehaviour
         {
             float x = Mathf.Rad2Deg * Mathf.Cos(viewAngle);
             float z = Mathf.Rad2Deg * Mathf.Sin(viewAngle);
-            transform.LookAt(transform.position + new Vector3(x, transform.position.y, z));
+            transform.LookAt(transform.position + new Vector3(-x, transform.position.y, -z));
         }
 
         Vector2 movement = (usedControl == Control.Controller) ? GamePadManager.ThumbLeft(PlayerIndex.One) : new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        Vector3 move = transform.forward * -movement.y + transform.right * -movement.x;
+        Vector3 move = transform.forward * movement.y + transform.right * movement.x;
 
         rigidbody.AddForce(move * acceleration);
 
@@ -182,6 +194,8 @@ public class PlayerController : MonoBehaviour
 
         if (velocity.magnitude < deathZone)
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+
+        AnimationSineController.Movespeed = (move.magnitude != 0) ? 1.5f * rigidbody.velocity.magnitude / speed : 0;
     }
 
     private void GamePadManager_Connected(GamePadManager.GamePadEventArgs e)
@@ -221,6 +235,7 @@ public class PlayerController : MonoBehaviour
         collector = GetComponent<Collector>();
         powerupTimer = new Timer(0.1f);
         collector.Collect += Collector_Collect;
+        AnimationSineController.OnHitMethod = smasher.attackAllEnemies;
     }
 
     private void Collector_Collect(object sender, EventArgs e)
@@ -244,6 +259,8 @@ public class PlayerController : MonoBehaviour
         if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.B) || Input.GetKeyDown(KeyCode.R))
             DropItem();
 
+        AnimationSineController.Attacking = Input.GetMouseButton(0);
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
             UseDash();
 
@@ -265,6 +282,22 @@ public class PlayerController : MonoBehaviour
         wave.Update();
     }
 
+
+    public bool Damage(float value)
+    {
+        if (Switcher.Value > -0.5f)
+        {
+            Health -= value;
+            if (Health <= 0)
+            {
+                AnimationSineController.Dead = true;
+            }
+
+            AnimationSineController.OnDamage();
+            return true;
+        }
+        return false;
+    }
     private void UseItem()
     {
         if (collector.Bag[selectedItem] == PowerUps.None)

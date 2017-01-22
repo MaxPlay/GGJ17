@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -311,12 +311,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b745f0d43d2fda4ba68e87eb13c8adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Animation: {fileID: 0}
   acceleration: 15
+  activePowerup: 0
   dash:
     cooldown: 0
     pushbackDistance: 0
     radius: 0
   deathZone: 0.05
+  enemiesInRange: []
+  selectedItem: 0
   smash:
     cooldown: 0
     area: 0
@@ -580,6 +584,7 @@ MonoBehaviour:
   height: 0
   cameraMoveSpeedX: 0.176
   cameraMoveSpeedY: 0.177
+  target: {fileID: 706629637}
 --- !u!1 &1894832333
 GameObject:
   m_ObjectHideFlags: 0

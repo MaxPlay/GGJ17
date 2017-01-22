@@ -1131,7 +1131,7 @@ MonoBehaviour:
   abilitySprites:
   - {fileID: 21300000, guid: d0e74d50ea7dca547ab20fb706418407, type: 3}
   - {fileID: 21300000, guid: 28df29a0d5a329a49bf820ffb01678e0, type: 3}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 726773c0ab52aab498b902f48ecdd9c7, type: 3}
   locPlayerController: {fileID: 0}
   sineView:
     curves:
@@ -1141,13 +1141,13 @@ MonoBehaviour:
     - {fileID: 224139914683708624}
     curvesKnob: {fileID: 224811273786710900}
     switcher:
-      switchTime: 0
-      highTime: 0
-      lowTime: 0
-      value: 0
-      state: 0
-    high: {r: 0.9843138, g: 0.27450982, b: 0.03529412, a: 1}
-    low: {r: 0.18039216, g: 0.3372549, b: 0.8705883, a: 1}
+      switchTime: 5
+      highTime: 3
+      lowTime: 3
+      value: 1
+      state: 1
+    high: {r: 0.9568628, g: 0.3647059, b: 0.15686275, a: 1}
+    low: {r: 0.21960786, g: 0.36862746, b: 0.8470589, a: 1}
   speed: 1
   powerupWatch: {fileID: 114310643006152390}
   abilityWatch1: {fileID: 114995209544087956}

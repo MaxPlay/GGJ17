@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[RequireComponent(typeof(PlayerController))]
 public class SineWaves : MonoBehaviour
 {
     public float Sin;
     public float Orb;
+    private PlayerController playerController;
     void Start()
     {
         morphID = Animator.StringToHash("Morph");
@@ -21,7 +23,7 @@ public class SineWaves : MonoBehaviour
         dashID = Animator.StringToHash("Dash");
 
 
-
+        playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         material = GetComponentInChildren<Renderer>().material;
         skinnedRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -31,10 +33,16 @@ public class SineWaves : MonoBehaviour
 
     void Update()
     {
+        ReadPlayerController();
         FeedAnimator();
         ChangeMaterial();
         LerpChibby();
         DeathOrb();
+    }
+
+    void ReadPlayerController()
+    {
+        Sin = (playerController.Switcher.Value-1)*-0.5f;
     }
 
     private const int runningLayerID = 1;

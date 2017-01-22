@@ -14,7 +14,7 @@ public class CameraPosition
         get { return upperAngle; }
         set { upperAngle = value; }
     }
-
+    
     [SerializeField]
     private float lowerAngle;
 
@@ -109,6 +109,8 @@ public class CameraController : MonoBehaviour
         camera = Camera.main;
     }
 
+    [SerializeField]
+    Transform target;
     void Update()
     {
         Vector2 input = controller.UsedControl == Control.Controller ? GamePadManager.ThumbRight(XInputDotNetPure.PlayerIndex.One) : new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -118,7 +120,7 @@ public class CameraController : MonoBehaviour
 
         transform.position = controller.transform.position;
         camera.transform.localPosition = GetPosition(controller.SineValue);
-        camera.transform.LookAt(transform);
+        camera.transform.LookAt(target);
 
         controller.CameraDirection = angle;
     }

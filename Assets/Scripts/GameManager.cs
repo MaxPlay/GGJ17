@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        timer = new Timer(4);
         instance = this;
     }
 
@@ -34,8 +35,19 @@ public class GameManager : MonoBehaviour
         set { enemiesBase = value; }
     }
 
+    Timer timer;
+    [SerializeField]
+    private Spawner spawner;
+
     void Update()
     {
         GamePadManager.Update();
+        if (timer.Percentage == 1)
+        {
+            timer = new Timer(8);
+            spawner.Spawn(10);
+        }
+
+        timer.Update();
     }
 }

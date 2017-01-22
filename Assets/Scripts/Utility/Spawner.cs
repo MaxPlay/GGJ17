@@ -17,13 +17,13 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
-        Instantiate(spawnable, GetSpawnPosition(), Quaternion.identity);
+        Instantiate(spawnable, GetSpawnPosition(), Quaternion.identity, transform);
     }
 
     public void Spawn(int count)
     {
         for (int i = 0; i < count; i++)
-            Instantiate(spawnable, GetSpawnPosition(), Quaternion.identity);
+            Instantiate(spawnable, GetSpawnPosition(), Quaternion.identity, transform);
     }
 
     #endregion Public Methods

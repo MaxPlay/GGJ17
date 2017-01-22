@@ -7,7 +7,8 @@ public class EnemySmashController : MonoBehaviour {
     [SerializeField]
     private int Damage;
 
-    private List<EnemyBehaviour> list_enemies = new List<EnemyBehaviour>();
+    [SerializeField]
+    private List<EnemyBehaviour> enemies = new List<EnemyBehaviour>();
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,7 +16,7 @@ public class EnemySmashController : MonoBehaviour {
 
         if (enemy != null)
         {
-            list_enemies.Add(enemy);
+            enemies.Add(enemy);
         }
     }
 
@@ -25,7 +26,7 @@ public class EnemySmashController : MonoBehaviour {
 
         if (enemy != null)
         {
-            list_enemies.Remove(enemy);
+            enemies.Remove(enemy);
         }
     }
 
@@ -40,14 +41,15 @@ public class EnemySmashController : MonoBehaviour {
     public void attackAllEnemies()
     {
         //winkel richtig: hauen
-        foreach (EnemyBehaviour enemy in list_enemies)
+        for (int i = enemies.Count - 1; i >= 0; i--)
         {
-            Vector3 targetDir = enemy.transform.position - transform.position;
+            Vector3 targetDir = enemies[i].transform.position - transform.position;
             float angle = Vector3.Angle(targetDir, transform.forward);
 
-            if (angle > 45 || angle < 135)
+            // if (angle > 45 || angle < 135)
             {
-                enemy.Damage(Damage);
+                if (enemies[i].Damage(Damage))
+                    enemies.RemoveAt(i);
 
             }
         }
