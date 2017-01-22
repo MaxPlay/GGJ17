@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 706629633}
   - component: {fileID: 706629632}
   - component: {fileID: 706629638}
+  - component: {fileID: 706629639}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -310,8 +311,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b745f0d43d2fda4ba68e87eb13c8adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
   acceleration: 15
+  dash:
+    cooldown: 0
+    pushbackDistance: 0
+    radius: 0
+  deathZone: 0.05
+  smash:
+    cooldown: 0
+    area: 0
+    pushbackDistance: 0
+  speed: 3
   switcher:
     switchTime: 5
     highTime: 3
@@ -319,6 +329,10 @@ MonoBehaviour:
     value: 0
     state: 0
   usedControl: 0
+  viewAngle: 0
+  wave:
+    cooldown: 0
+    distance: 0
 --- !u!54 &706629633
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -394,8 +408,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1504204249}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -411,6 +424,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 1
+--- !u!114 &706629639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706629631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa8de842d9b624440a24a7bd6c8166e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limit: 3
+  bag: 
 --- !u!1 &1237052307
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,13 +546,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1504204248}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.57, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1237052312}
-  m_Father: {fileID: 706629637}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1504204250
 MonoBehaviour:
@@ -539,7 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a74361e3c2157d47ae377cb3c18d274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  controller: {fileID: 706629632}
   chibi:
     upperAngle: 0.27
     lowerAngle: -0.35
@@ -552,6 +578,8 @@ MonoBehaviour:
     lowerDistance: 7.05
   angle: 0
   height: 0
+  cameraMoveSpeedX: 0.176
+  cameraMoveSpeedY: 0.177
 --- !u!1 &1894832333
 GameObject:
   m_ObjectHideFlags: 0

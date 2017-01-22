@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -66,6 +67,7 @@ public class EnemyBehaviour : MonoBehaviour
         Gizmos.DrawRay(r);
     }
 
+<<<<<<< HEAD:Assets/Scripts/EnemyBehaviour.cs
     public Vector3 getPosition()
     {
         return this.transform.position;
@@ -75,5 +77,25 @@ public class EnemyBehaviour : MonoBehaviour
     public void beingHitDamage()
     {
         healthPoints -= damage;
+=======
+    internal void Freeze()
+    {
+
+    }
+
+    public void Push(Vector3 origin)
+    {
+
+    }
+
+    public void Kill()
+    {
+
+    }
+
+    public void Damage(float damage)
+    {
+
+>>>>>>> 45cd889de702a6422fb6d983ff3fb3d0b894b9b5:Assets/Scripts/Enemy/EnemyBehaviour.cs
     }
 }

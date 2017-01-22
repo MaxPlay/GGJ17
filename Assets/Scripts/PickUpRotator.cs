@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickUpRotator : MonoBehaviour {
+[ExecuteInEditMode]
+public class PickUpRotator : MonoBehaviour
+{
+    [SerializeField]
+    Vector3 rotation;
+    [SerializeField]
+    private PowerUps type;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
-	}
+    public PowerUps Type
+    {
+        get { return type; }
+    }
+    
+    void Update()
+    {
+        transform.Rotate(rotation * Time.deltaTime);
+    }
 }
