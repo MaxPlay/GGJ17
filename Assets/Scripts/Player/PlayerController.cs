@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using XInputDotNetPure;
 
@@ -13,6 +14,8 @@ public enum Control
 public class PlayerController : MonoBehaviour
 {
     #region Private Fields
+
+    public Collector Collector { get { return collector; } }
 
     [SerializeField]
     private float acceleration;
@@ -66,6 +69,8 @@ public class PlayerController : MonoBehaviour
     #region Public Events
 
     public event ItemRemovedEventHandler ItemRemoved;
+
+    public event EventHandler ItemAdded;
 
     #endregion Public Events
 
@@ -195,6 +200,12 @@ public class PlayerController : MonoBehaviour
             ItemRemoved(selectedItem);
     }
 
+    private void OnItemAdded()
+    {
+        if (ItemAdded != null)
+            ItemAdded(this, new EventArgs());
+    }
+
     private void SineStateChanged(SineStateSwitcher.SineState state)
     {
         if (state == SineStateSwitcher.SineState.Low)
@@ -208,23 +219,39 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         collector = GetComponent<Collector>();
+        powerupTimer = new Timer(0.1f);
+        collector.Collect += Collector_Collect;
+    }
+
+    private void Collector_Collect(object sender, EventArgs e)
+    {
+        OnItemAdded();
     }
 
     private void Update()
     {
         switcher.Update();
 
-        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.LeftShoulder))
+        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.LeftShoulder) || Input.GetKeyDown(KeyCode.E))
             selectedItem = selectedItem == collector.Bag.Length ? 0 : selectedItem + 1;
 
-        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.LeftShoulder))
+        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.LeftShoulder) || Input.GetKeyDown(KeyCode.Q))
             selectedItem = selectedItem == 0 ? collector.Bag.Length - 1 : selectedItem - 1;
 
-        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.A))
+        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.A) || Input.GetKeyDown(KeyCode.Space))
             UseItem();
 
-        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.B))
+        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.B) || Input.GetKeyDown(KeyCode.R))
             DropItem();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            UseDash();
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            UseSmash();
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            UseWave();
 
         if (activePowerup > -1)
             if (powerupTimer.Update())
@@ -232,11 +259,18 @@ public class PlayerController : MonoBehaviour
                 OnItemRemoved(activePowerup);
                 activePowerup = -1;
             }
+
+        dash.Update();
+        smash.Update();
+        wave.Update();
     }
 
     private void UseItem()
     {
         if (collector.Bag[selectedItem] == PowerUps.None)
+            return;
+
+        if (powerupTimer.Value > 0)
             return;
 
         switch (collector.Bag[selectedItem])
@@ -282,7 +316,16 @@ public class PlayerController : MonoBehaviour
         }
 
         activePowerup = selectedItem;
+        OnUsedItem(activePowerup);
     }
+
+    private void OnUsedItem(int activePowerup)
+    {
+        if (UsedItem != null)
+            UsedItem(activePowerup);
+    }
+
+    public event ItemRemovedEventHandler UsedItem;
 
     #endregion Private Methods
 }
