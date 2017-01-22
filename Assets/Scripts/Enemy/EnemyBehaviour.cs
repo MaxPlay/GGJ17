@@ -66,19 +66,13 @@ public class EnemyBehaviour : MonoBehaviour
         r.origin = transform.position;
         Gizmos.DrawRay(r);
     }
-
-<<<<<<< HEAD:Assets/Scripts/EnemyBehaviour.cs
+    
     public Vector3 getPosition()
     {
-        return this.transform.position;
+        return transform.position;
     }
 
-
-    public void beingHitDamage()
-    {
-        healthPoints -= damage;
-=======
-    internal void Freeze()
+    public void Freeze()
     {
 
     }
@@ -95,7 +89,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void Damage(float damage)
     {
-
->>>>>>> 45cd889de702a6422fb6d983ff3fb3d0b894b9b5:Assets/Scripts/Enemy/EnemyBehaviour.cs
+        
     }
 }
