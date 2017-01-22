@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemySmashController : MonoBehaviour {
 
+    [SerializeField]
+    private int Damage;
+
     private List<EnemyBehaviour> list_enemies = new List<EnemyBehaviour>();
 
     private void OnTriggerEnter(Collider other)
@@ -26,25 +29,25 @@ public class EnemySmashController : MonoBehaviour {
         }
     }
 
-    private void Update()
-    {
-        if(list_enemies.Count > 0)
-        {
-            attackAllEnemies();
-        }
-    }
+    //private void Update()
+    //{
+    //    if(list_enemies.Count > 0)
+    //    {
+    //        attackAllEnemies();
+    //    }
+    //}
 
     public void attackAllEnemies()
     {
         //winkel richtig: hauen
         foreach (EnemyBehaviour enemy in list_enemies)
         {
-            Vector3 targetDir = enemy.getPosition() - transform.position;
+            Vector3 targetDir = enemy.transform.position - transform.position;
             float angle = Vector3.Angle(targetDir, transform.forward);
 
             if (angle > 45 || angle < 135)
             {
-                enemy.beingHitDamage();
+                enemy.Damage(Damage);
 
             }
         }
