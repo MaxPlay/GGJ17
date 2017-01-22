@@ -308,6 +308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc88825b09a3ad24f8a4affc8fe09072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotation: {x: 0, y: 0, z: 0}
+  type: 0
 --- !u!23 &194020790
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -503,6 +505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc88825b09a3ad24f8a4affc8fe09072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotation: {x: 0, y: 0, z: 0}
+  type: 0
 --- !u!23 &249187692
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1056,6 +1060,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc88825b09a3ad24f8a4affc8fe09072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotation: {x: 0, y: 0, z: 0}
+  type: 0
 --- !u!23 &548906613
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2204,6 +2210,8 @@ GameObject:
   - component: {fileID: 1252158784}
   - component: {fileID: 1252158785}
   - component: {fileID: 1252158786}
+  - component: {fileID: 1252158787}
+  - component: {fileID: 1252158788}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2222,16 +2230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8de842d9b624440a24a7bd6c8166e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxBagText: {fileID: 845856108}
-  CountText: {fileID: 210722101}
-  WinText: {fileID: 401902476}
-  CountPUInvincibilityText: {fileID: 414859794}
-  CountPUFrezeText: {fileID: 1492969652}
-  CountPUWaveskipText: {fileID: 1985913000}
-  CountPUDoubleDamageText: {fileID: 1310363727}
-  CountPUPushText: {fileID: 701603795}
-  CountPURageBurstText: {fileID: 1877372884}
-  CountPURaydestructText: {fileID: 1172493403}
+  limit: 0
+  bag: 
 --- !u!54 &1252158778
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2321,8 +2321,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b745f0d43d2fda4ba68e87eb13c8adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
   acceleration: 10
+  activePowerup: 0
+  dash:
+    cooldown: 0
+    pushbackDistance: 0
+    radius: 0
+  deathZone: 0
+  enemiesInRange: []
+  selectedItem: 0
+  smash:
+    cooldown: 0
+    area: 0
+    pushbackDistance: 0
+  speed: 3
   switcher:
     switchTime: 0
     highTime: 0
@@ -2331,6 +2343,9 @@ MonoBehaviour:
     state: 0
   usedControl: 1
   viewAngle: 0
+  wave:
+    cooldown: 0
+    distance: 0
 --- !u!114 &1252158784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2342,6 +2357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741f8b06df671484f8dc7ecd5c180768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 0
 --- !u!135 &1252158785
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2365,6 +2381,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59ba44207dffc04295a42f9211c60d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1252158787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1252158776}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60036511072aa904f8fca00ae769f198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audio: {fileID: 1252158788}
+--- !u!82 &1252158788
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1252158776}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f71e7d31457d89e41bb5a450c43ae5b8, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &1310363725
 GameObject:
   m_ObjectHideFlags: 0
@@ -2502,6 +2610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc88825b09a3ad24f8a4affc8fe09072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotation: {x: 0, y: 0, z: 0}
+  type: 0
 --- !u!23 &1369982292
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2887,6 +2997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc88825b09a3ad24f8a4affc8fe09072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotation: {x: 0, y: 0, z: 0}
+  type: 0
 --- !u!23 &1687430610
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3107,6 +3219,8 @@ MonoBehaviour:
     lowerDistance: 0
   angle: 0
   height: 0
+  cameraMoveSpeedX: 0
+  cameraMoveSpeedY: 0
 --- !u!1 &1781627712
 GameObject:
   m_ObjectHideFlags: 0
