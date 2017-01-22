@@ -6,6 +6,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviour : MonoBehaviour
 {
+
+
     private float distanceToTarget;
     private float localRadius;
     private float targetRadius;
@@ -43,7 +45,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
         
-        //Moves Actor to Target, but NOT into the Target ( -(loc and targ radius) )
+        //Moves Actor to Target, but NOT into the Target ( -(loc and targ radius) )    
         agent.SetDestination(Vector3.MoveTowards(transform.position, target.transform.position, distanceToTarget - (localRadius + targetRadius)));
         
         if (distanceToTarget > viewRange)
@@ -62,5 +64,16 @@ public class EnemyBehaviour : MonoBehaviour
         r.direction = target.transform.position - transform.position;
         r.origin = transform.position;
         Gizmos.DrawRay(r);
+    }
+
+    public Vector3 getPosition()
+    {
+        return this.transform.position;
+    }
+
+
+    public void beingHitDamage()
+    {
+        healthPoints -= damage;
     }
 }

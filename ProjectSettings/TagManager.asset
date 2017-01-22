@@ -12,6 +12,7 @@ TagManager:
   - PUDoubleDamage
   - PURageBurst
   - PURayDestruct
+  - Enemy
   layers:
   - Default
   - TransparentFX
