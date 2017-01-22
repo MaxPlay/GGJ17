@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SineWaves : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class SineWaves : MonoBehaviour
         landingAttackID = Animator.StringToHash("LandingAttack");
         pushAttackID = Animator.StringToHash("PushAttack");
         steppedID = Animator.StringToHash("Stepped");
+        dashID = Animator.StringToHash("Dash");
 
 
 
@@ -32,6 +34,7 @@ public class SineWaves : MonoBehaviour
         FeedAnimator();
         ChangeMaterial();
         LerpChibby();
+        DeathOrb();
     }
 
     private const int runningLayerID = 1;
@@ -48,11 +51,12 @@ public class SineWaves : MonoBehaviour
     private int landingAttackID;
     private int pushAttackID;
     private int steppedID;
+    private int dashID;
 
     public float Movespeed;
     public bool Attacking;
     public bool Jump;
-    public bool Dead;
+    public bool Dead;///USELESS!?
 
     public void OnLandingAttack()
     {
@@ -67,6 +71,21 @@ public class SineWaves : MonoBehaviour
     public void OnDamage()
     {
         animator.SetTrigger(steppedID);
+    }
+
+    public void OnDash()
+    {
+        animator.SetTrigger(dashID);
+    }
+
+
+    public Action OnHitMethod;
+
+    void HitEvent()
+    {
+        Debug.Log("hit");
+        if (OnHitMethod != null)
+            OnHitMethod();
     }
 
     void FeedAnimator()
@@ -116,8 +135,15 @@ public class SineWaves : MonoBehaviour
         skinnedRenderer.SetBlendShapeWeight(0, Sin * 100);
     }
 
+
     void DeathOrb()
     {
+        if (Orb > 0.2) {
+            animator.enabled = false;
+        } else
+        {
+            animator.enabled = true;
+        }
         skinnedRenderer.SetBlendShapeWeight(1, Orb);
     }
 }

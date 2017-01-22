@@ -395,9 +395,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Attacking
     m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: Morph
-    m_EventTreshold: 0.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102809660433549446}
   m_Solo: 0
@@ -710,9 +707,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.20776677
-  m_TransitionOffset: 0.6111622
-  m_ExitTime: 0.9277108
+  m_TransitionDuration: 0.38594997
+  m_TransitionOffset: 0.039755043
+  m_ExitTime: 0.48194999
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1383,7 +1380,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_Motion: {fileID: 7400044, guid: d9eb5d6f805cd78479fb94ccfb2a7ec5, type: 3}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: Morph
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
 --- !u!1102 &1102821012080318868
