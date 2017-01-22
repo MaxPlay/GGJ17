@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
+    [SerializeField]
     private Control preferredControl;
 
     public Control PreferredControl
@@ -24,7 +25,15 @@ public class GameManager : MonoBehaviour
         set { preferredControl = value; }
     }
 
-    // Update is called once per frame
+    [SerializeField]
+    private Transform enemiesBase;
+
+    public Transform EnemiesBase
+    {
+        get { return enemiesBase; }
+        set { enemiesBase = value; }
+    }
+
     void Update()
     {
         GamePadManager.Update();

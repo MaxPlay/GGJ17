@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -62,5 +63,25 @@ public class EnemyBehaviour : MonoBehaviour
         r.direction = target.transform.position - transform.position;
         r.origin = transform.position;
         Gizmos.DrawRay(r);
+    }
+
+    internal void Freeze()
+    {
+
+    }
+
+    public void Push(Vector3 origin)
+    {
+
+    }
+
+    public void Kill()
+    {
+
+    }
+
+    public void Damage(float damage)
+    {
+
     }
 }

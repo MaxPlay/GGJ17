@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using XInputDotNetPure;
 
 public enum Control
@@ -16,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float acceleration;
 
+    [SerializeField]
+    private int activePowerup;
+
     private Collector collector;
 
     [SerializeField]
@@ -24,8 +28,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float deathZone;
 
+    [SerializeField]
+    private List<EnemyBehaviour> enemiesInRange;
+
+    private Timer powerupTimer;
     private new Rigidbody rigidbody;
 
+    [SerializeField]
     private int selectedItem;
 
     [SerializeField]
@@ -48,7 +57,21 @@ public class PlayerController : MonoBehaviour
 
     #endregion Private Fields
 
+    #region Public Delegates
+
+    public delegate void ItemRemovedEventHandler(int selectedItem);
+
+    #endregion Public Delegates
+
+    #region Public Events
+
+    public event ItemRemovedEventHandler ItemRemoved;
+
+    #endregion Public Events
+
     #region Public Properties
+
+    public int ActivePowerup { get { return activePowerup; } }
 
     public float CameraDirection
     {
@@ -57,16 +80,37 @@ public class PlayerController : MonoBehaviour
     }
 
     public Dash Dash { get { return dash; } }
+    public Timer PowerupTimer { get { return powerupTimer; } }
+    public int SelectedItem { get { return selectedItem; } }
     public float SineValue { get { return switcher.Value; } }
     public Smash Smash { get { return smash; } }
+    public SineStateSwitcher Switcher { get { return switcher; } }
     public Control UsedControl { get { return usedControl; } }
     public Wave Wave { get { return wave; } }
-    public SineStateSwitcher Switcher { get { return switcher; } }
-    public int SelectedItem { get { return selectedItem; } }
 
     #endregion Public Properties
 
     #region Public Methods
+
+    public void DamagePlayer()
+    {
+        if (activePowerup > -1 && collector.Bag[activePowerup] == PowerUps.Invincibility)
+            return;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        EnemyBehaviour enemy = other.GetComponent<EnemyBehaviour>();
+        if (enemy != null)
+            enemiesInRange.Add(enemy);
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        EnemyBehaviour enemy = other.GetComponent<EnemyBehaviour>();
+        if (enemy != null)
+            enemiesInRange.Remove(enemy);
+    }
 
     public void UseDash()
     {
@@ -96,6 +140,19 @@ public class PlayerController : MonoBehaviour
         GamePadManager.Connected += GamePadManager_Connected;
         GamePadManager.Disconnected += GamePadManager_Disconnected;
         switcher.StateChanged += SineStateChanged;
+    }
+
+    private void DropItem()
+    {
+        if (collector.Bag[selectedItem] == PowerUps.None)
+            return;
+
+        OnItemRemoved(selectedItem);
+        GameObject newItem = PrefabManager.Instance.SpawnPowerup(collector.Bag[selectedItem], transform.position + transform.forward * 2);
+        Rigidbody rigidbody = newItem.GetComponent<Rigidbody>();
+        if (rigidbody != null)
+            rigidbody.AddForce(transform.forward * 2);
+        collector.Bag[selectedItem] = PowerUps.None;
     }
 
     private void FixedUpdate()
@@ -132,6 +189,12 @@ public class PlayerController : MonoBehaviour
         usedControl = Control.Keyboard;
     }
 
+    private void OnItemRemoved(int selectedItem)
+    {
+        if (ItemRemoved != null)
+            ItemRemoved(selectedItem);
+    }
+
     private void SineStateChanged(SineStateSwitcher.SineState state)
     {
         if (state == SineStateSwitcher.SineState.Low)
@@ -156,6 +219,69 @@ public class PlayerController : MonoBehaviour
 
         if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.LeftShoulder))
             selectedItem = selectedItem == 0 ? collector.Bag.Length - 1 : selectedItem - 1;
+
+        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.A))
+            UseItem();
+
+        if (GamePadManager.ButtonPressed(PlayerIndex.One, GamePadManager.ButtonType.B))
+            DropItem();
+
+        if (activePowerup > -1)
+            if (powerupTimer.Update())
+            {
+                OnItemRemoved(activePowerup);
+                activePowerup = -1;
+            }
+    }
+
+    private void UseItem()
+    {
+        if (collector.Bag[selectedItem] == PowerUps.None)
+            return;
+
+        switch (collector.Bag[selectedItem])
+        {
+            case PowerUps.Freeze:
+                EnemyBehaviour[] enemies = GameManager.Instance.EnemiesBase.GetComponentsInChildren<EnemyBehaviour>();
+                foreach (EnemyBehaviour enemy in enemies)
+                {
+                    enemy.Freeze();
+                }
+                powerupTimer = new Timer(5f);
+                break;
+
+            case PowerUps.Waveskip:
+                switcher.Waveskip(5f);
+                powerupTimer = new Timer(1f);
+                break;
+
+            case PowerUps.Invincibility:
+            case PowerUps.DoubleDamage:
+            case PowerUps.RageBurst:
+                powerupTimer = new Timer(5f);
+                break;
+
+            case PowerUps.Raydestruct:
+                RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, float.PositiveInfinity);
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    EnemyBehaviour enemy = hits[i].transform.GetComponent<EnemyBehaviour>();
+                    if (enemy != null)
+                        enemy.Kill();
+                }
+                powerupTimer = new Timer(2f);
+                break;
+
+            case PowerUps.Push:
+                foreach (EnemyBehaviour enemy in enemiesInRange)
+                {
+                    enemy.Push(transform.position);
+                }
+                powerupTimer = new Timer(5f);
+                break;
+        }
+
+        activePowerup = selectedItem;
     }
 
     #endregion Private Methods
